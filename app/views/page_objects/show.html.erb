@@ -1,0 +1,10 @@
+<% stylesheets 'google-adsense' -%>
+<% # javascripts 'prototype', 'effects', 'dragdrop', 'assets' %>
+
+<% if @page_object.has_ad_unit? %>
+  <div class="ad-unit"><%= @page_object.displayed_ad_unit.code %></div>
+<% else %>
+  <div class="no-ad-unit"></div>
+<% end %>
+
+

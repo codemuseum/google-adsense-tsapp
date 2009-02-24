@@ -1,0 +1,38 @@
+<% stylesheets 'google-adsense', 'google-adsense-edit' -%>
+<% javascripts 'google-adsense-edit' %>
+
+<% fields_for_page_object do |f| %>
+
+  
+  <% unless @page_object.all_ad_units.empty? %>
+    <% fields_for "#{f.object_name}[assigned_ad_unit]", f.object.displayed_ad_unit do |auf| -%>
+
+      <%= auf.label :id, "Ad Unit" %>
+      <%= auf.select :id, (f.object.all_ad_units + [["New...", nil]]), { :selected => (f.object.has_ad_unit? ? f.object.displayed_ad_unit.id : '') }, { :class => 'ad-unit-select' } %>
+
+    <% end %>
+  <% end %>
+  
+  
+  <% fields_for "#{f.object_name}[assigned_ad_unit]", AdUnit.new(:default => f.object.default_ad_unit.nil?) do |auf| -%>
+    <div class="edited-value<%= ' hidden' if f.object.has_ad_unit? %>">
+      <div>
+        <%= auf.label :nickname %>
+        <%= auf.text_field :nickname %>
+      </div>
+      
+      <div>
+        <div><%= auf.label :code, "Adsense Unit Code from Google" %></div>
+        <div><%= auf.text_area :code, :rows => 5 %></div>
+      </div>
+      
+      <div>
+        <%= auf.label :default, 'Set as default' %>
+        <%= auf.select :default, [['Yes', true], ['No', false]] %>
+      </div>
+    </div>
+
+    <%= auf.hidden_field :edited_unit %>
+  <% end %>
+
+<% end %>
